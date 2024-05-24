@@ -1,5 +1,5 @@
 import requests
-from globals import gqlUrl, generateHeaders
+from pyleetcode.globals import gqlUrl, generateHeaders
 
 
 def fetchUserData() -> dict:
