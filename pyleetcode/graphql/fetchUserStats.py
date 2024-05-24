@@ -31,3 +31,7 @@ def fetchUserStats() -> dict:
     )
     data = response.json()
     return data
+
+
+if __name__ == "__main__":
+    print(fetchUserStats())

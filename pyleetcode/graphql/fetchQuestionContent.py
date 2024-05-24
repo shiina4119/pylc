@@ -25,3 +25,8 @@ def fetchQuestionContent(titleSlug: str) -> dict:
     )
     data = response.json()
     return data["data"]["question"]
+
+
+if __name__ == "__main__":
+    titleSlug = input("Enter title-slug of problem: ")
+    print(fetchQuestionContent(titleSlug))
