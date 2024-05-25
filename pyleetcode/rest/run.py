@@ -26,5 +26,8 @@ def runCode(titleSlug: str, test: bool = True):
 
         payload["data_input"] = inputStr
 
-    response = requests.post(url=url, headers=headers, data=json.dumps(payload))
-    return response.json()
+    response = requests.post(url=url, headers=headers, data=json.dumps(payload)).json()
+    if test:
+        return response["interpret_id"]
+    else:
+        return response["submission_id"]
