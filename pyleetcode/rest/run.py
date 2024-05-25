@@ -1,24 +1,22 @@
 import requests
 import json
-from pyleetcode.globals import generateHeaders, runUrl, readConfig
+from pyleetcode.globals import generateHeaders, runUrl, readConfig, readSourceCode
 from pyleetcode.graphql.fetchQuestionContent import fetchQuestionContent
 
 
 def runCode(titleSlug: str, test: bool = True):
     url = runUrl(titleSlug=titleSlug, test=test)
     headers = generateHeaders(referer=f"problems/{titleSlug}")
-
-    lang = readConfig("preferences")["lang"]
-
     questionContent = fetchQuestionContent(titleSlug=titleSlug)
 
+    lang = readConfig("preferences")["lang"]
     questionId = questionContent["questionId"]
+    typedCode = readSourceCode(questionId=questionId, titleSlug=titleSlug, lang=lang)
 
     payload = {
         "lang": lang,
         "question_id": questionId,
-        # TODO: finish typed_code
-        "typed_code": "class Solution:\n    def twoSum(self, nums: List[int], target: int) -> List[int]:    return [4]",
+        "typed_code": typedCode,
     }
 
     if test:
@@ -30,7 +28,3 @@ def runCode(titleSlug: str, test: bool = True):
 
     response = requests.post(url=url, headers=headers, data=json.dumps(payload))
     return response.json()
-
-
-if __name__ == "__main__":
-    print(runCode("two-sum"))
