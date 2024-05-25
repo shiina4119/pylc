@@ -1,0 +1,7 @@
+[project]
+name = "pyleetcode"
+version = "0.0.1"
+description = "Basic ahh leetcode TUI client"
+dependencies = [
+  "requests"
+]
