@@ -1,5 +1,6 @@
 from os.path import exists, expanduser
 import tomllib
+from importlib import resources as rs
 
 baseUrl = "https://leetcode.com"
 gqlUrl = f"{baseUrl}/graphql"
@@ -19,6 +20,7 @@ def readConfig(key) -> dict:
     if not exists(f"{path}/config.toml"):
         # TODO: handle config.toml generation
         raise FileNotFoundError
+
     with open(f"{path}/config.toml", "rb") as f:
         rawData = tomllib.load(f)
         data = rawData[key]
@@ -27,6 +29,23 @@ def readConfig(key) -> dict:
 
     return data
 
+def readSourceCode(questionId: str, titleSlug: str, lang: str) -> str:
+    langFile = rs.files() / "lang.toml"
+    with langFile.open("rb") as f:
+        langMap = tomllib.load(f)
+
+    fileName = f"{questionId}.{titleSlug}.{langMap[lang]}"
+    path = f"{expanduser("~")}/.pyleetcode/code/{fileName}"
+
+    if not exists(path):
+        # TODO: tell user to write code first
+        raise FileNotFoundError
+
+    with open(path, "r") as f:
+        lines = f.readlines()
+
+    codeString = "".join(lines)
+    return codeString
 
 def generateHeaders(referer: str = "") -> dict:
     headers = {
@@ -42,8 +61,7 @@ def generateHeaders(referer: str = "") -> dict:
     headers["Cookie"] = \
         f"LEETCODE_SESSION={cookies["session"]}; csrftoken={cookies["csrftoken"]}"
 
-
     return headers
 
 if __name__ == "__main__":
-    print(generateHeaders(""))
+    print(generateHeaders())
