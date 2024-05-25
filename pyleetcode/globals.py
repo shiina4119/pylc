@@ -15,6 +15,9 @@ def runUrl(titleSlug: str, test: bool = True) -> str:
 
     return url
 
+def statusUrl(id: str) -> str:
+    return f"{baseUrl}/submissions/detail/{id}/check/"
+
 def readConfig(key) -> dict:
     path = f"{expanduser("~")}/.pyleetcode"
     if not exists(f"{path}/config.toml"):
