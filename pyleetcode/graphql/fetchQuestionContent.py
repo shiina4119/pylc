@@ -1,3 +1,5 @@
+import argparse
+from typing import TypeVarTuple
 import requests
 from pyleetcode.globals import gqlUrl, generateHeaders
 
@@ -28,5 +30,9 @@ def fetchQuestionContent(titleSlug: str) -> dict:
 
 
 if __name__ == "__main__":
-    titleSlug = input("Enter title-slug of problem: ")
-    print(fetchQuestionContent(titleSlug))
+    parser = argparse.ArgumentParser(
+        description="Fetch Question Content by providing its titleSlug"
+    )
+    parser.add_argument("titleslug", type=str, help="Provide titleSlug")
+    args = parser.parse_args()
+    print(fetchQuestionContent(args.titleslug))
