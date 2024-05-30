@@ -1,4 +1,5 @@
 from pathlib import Path
+from rich.console import Console
 import tomllib
 
 BASE_DIR = f"{Path.home()}/.pyleetcode"
@@ -14,3 +15,5 @@ with open(config_path, "rb") as f:
     cookies = data["cookies"]
     prefs = data["preferences"]
     # TODO: handle error case for missing keys
+
+console = Console()
