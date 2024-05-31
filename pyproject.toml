@@ -1,0 +1,26 @@
+[project]
+name = "pylc_cli"
+version = "0.2"
+description = "A small CLI tool to solve leetcode problems from your favorite text editor!"
+readme = "README.md"
+requires-python = ">=3.5"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "html2text",
+    "requests",
+    "rich",
+]
+
+[project.scripts]
+pylc = "pylc_cli.main:main"
+
+[project.urls]
+Homepage = "https://github.com/shiina4119/pylc"
+Issues = "https://github.com/shiina4119/pylc/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
