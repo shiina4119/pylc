@@ -12,6 +12,7 @@ dependencies = [
     "html2text",
     "requests",
     "rich",
+    "tomli_w",
 ]
 
 [project.scripts]
