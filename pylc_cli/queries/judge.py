@@ -1,7 +1,7 @@
 import requests
 import json
 from . import generate_headers, BASE_URL
-from .fetch_question import fetch_question
+from .fetch_problem import fetch_problem
 
 
 def send_judge(title_slug: str, lang: str, typed_code: str, test: bool):
@@ -14,7 +14,7 @@ def send_judge(title_slug: str, lang: str, typed_code: str, test: bool):
     headers = generate_headers()
     headers["Referer"] = f"{BASE_URL}/problems/{title_slug}"
 
-    question = fetch_question(title_slug=title_slug)
+    question = fetch_problem(title_slug=title_slug)
     questionId = question["questionId"]
 
     payload = {

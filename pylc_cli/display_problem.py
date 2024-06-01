@@ -2,12 +2,12 @@ import html2text
 from rich.markdown import Markdown
 from rich.padding import Padding
 from . import console
-from .queries.fetch_question import fetch_daily, fetch_question
+from .queries.fetch_problem import fetch_daily, fetch_problem
 
 DIFF_COLOR = {"Easy": "green", "Medium": "yellow", "Hard": "red"}
 
 
-def display_question(title_slug: str):
+def display_problem(title_slug: str):
     def replaceSup(r: str) -> str:
         r = r.replace("<sup>", "^")
         r = r.replace("</sup>", "")
@@ -16,7 +16,7 @@ def display_question(title_slug: str):
     if title_slug == "daily":
         title_slug = fetch_daily()
 
-    question = fetch_question(title_slug=title_slug)
+    question = fetch_problem(title_slug=title_slug)
 
     diff = question["difficulty"]
     question_id = question["questionFrontendId"]

@@ -1,5 +1,4 @@
 import requests
-
 from . import generate_headers, GRAPHQL_URL
 
 
@@ -24,7 +23,7 @@ def fetch_daily() -> str:
     return json["data"]["activeDailyCodingChallengeQuestion"]["question"]["titleSlug"]
 
 
-def fetch_question(title_slug: str) -> dict:
+def fetch_problem(title_slug: str) -> dict:
     headers = generate_headers()
     query = """
     query ($titleSlug: String!) {

@@ -1,10 +1,9 @@
 import argparse
-from pathlib import Path
-from . import BASE_DIR, EXT_MAP, prefs
-from .display_question import display_question
+from . import EXT_MAP, prefs
+from .display_problem import display_problem
 from .run_solution import run
 from .solve import solve
-from .queries.fetch_question import fetch_daily
+from .queries.fetch_problem import fetch_daily
 
 
 def main():
@@ -36,10 +35,10 @@ def main():
     args = parser.parse_args()
 
     if args.command == "daily":
-        display_question(title_slug=fetch_daily())
+        display_problem(title_slug=fetch_daily())
 
     if args.command == "pick":
-        display_question(title_slug=args.titleslug)
+        display_problem(title_slug=args.titleslug)
 
     elif args.command == "solve":
         solve(

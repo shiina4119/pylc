@@ -2,7 +2,7 @@ import ast
 from pathlib import Path
 from rich.padding import Padding
 from . import BASE_DIR, console, EXT_MAP
-from .queries.fetch_question import fetch_question
+from .queries.fetch_problem import fetch_problem
 from .queries.judge import send_judge
 from .queries.status import get_status
 
@@ -19,7 +19,7 @@ def stringify_code(file_path: str) -> str:
 
 
 def run(title_slug: str, lang: str, test: bool):
-    question = fetch_question(title_slug=title_slug)
+    question = fetch_problem(title_slug=title_slug)
     id = question["questionFrontendId"]
     ext = EXT_MAP[lang]
 

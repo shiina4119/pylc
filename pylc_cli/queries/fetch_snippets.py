@@ -5,7 +5,7 @@ from . import generate_headers, GRAPHQL_URL
 def fetch_snippets(title_slug: str) -> dict:
     headers = generate_headers()
     query = """
-    query questionEditorData($titleSlug: String!) {
+    query ($titleSlug: String!) {
       question(titleSlug: $titleSlug) {
         codeSnippets {
           langSlug
