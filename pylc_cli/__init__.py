@@ -1,10 +1,15 @@
 from pathlib import Path
 from rich.console import Console
+import sqlite3
 import tomllib
 import tomli_w
 
 BASE_DIR = f"{Path.home()}/.pylc"
 Path(f"{BASE_DIR}/code").mkdir(parents=True, exist_ok=True)
+CACHE_PATH = f"{BASE_DIR}/cache.sqlite"
+
+con = sqlite3.connect(CACHE_PATH)
+con.row_factory = sqlite3.Row
 
 EXT_MAP = {
     "c": "c",

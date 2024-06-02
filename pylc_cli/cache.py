@@ -1,5 +1,4 @@
-import sqlite3
-from . import BASE_DIR
+from . import con
 from .queries.fetch_all_problems import (
     fetch_all_problems_count,
     fetch_all_problems_metadata,
@@ -8,7 +7,6 @@ from .queries.fetch_all_problems import (
 
 
 def update_cache():
-    con = sqlite3.connect(f"{BASE_DIR}/cache.sqlite")
     cur = con.cursor()
 
     cur.execute("DROP TABLE IF EXISTS metadata")
