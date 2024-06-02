@@ -18,7 +18,7 @@ def main():
     daily_parser = subparsers.add_parser("daily")
 
     pick_parser = subparsers.add_parser("pick")
-    pick_parser.add_argument("titleslug")
+    pick_parser.add_argument("id", type=int)
 
     solve_parser = subparsers.add_parser("solve")
     solve_parser.add_argument("titleslug")
@@ -35,10 +35,10 @@ def main():
     args = parser.parse_args()
 
     if args.command == "daily":
-        display_problem(title_slug=fetch_daily())
+        display_problem(id=fetch_daily())
 
     if args.command == "pick":
-        display_problem(title_slug=args.titleslug)
+        display_problem(id=args.id)
 
     elif args.command == "solve":
         solve(

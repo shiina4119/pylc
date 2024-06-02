@@ -2,13 +2,13 @@ import requests
 from . import generate_headers, GRAPHQL_URL
 
 
-def fetch_daily() -> str:
+def fetch_daily() -> int:
     headers = generate_headers()
     query = """
     query {
       activeDailyCodingChallengeQuestion {
         question {
-          titleSlug
+          questionFrontendId
         }
       }
     }
@@ -20,7 +20,11 @@ def fetch_daily() -> str:
         raise ConnectionError
 
     json = response.json()
-    return json["data"]["activeDailyCodingChallengeQuestion"]["question"]["titleSlug"]
+    return int(
+        json["data"]["activeDailyCodingChallengeQuestion"]["question"][
+            "questionFrontendId"
+        ]
+    )
 
 
 def fetch_problem(title_slug: str) -> dict:
