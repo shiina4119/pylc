@@ -21,9 +21,8 @@ def fetch_all_problems_count() -> int:
     return count
 
 
-def fetch_all_problems_metadata():
+def fetch_all_problems_metadata(count: int) -> dict:
     headers = generate_headers()
-    count = fetch_all_problems_count()
     query = """
     query ($categorySlug: String
     $limit: Int
@@ -61,9 +60,8 @@ def fetch_all_problems_metadata():
     return json["data"]["questionList"]["data"]
 
 
-def fetch_all_problems_content():
+def fetch_all_problems_content(count: int) -> dict:
     headers = generate_headers()
-    count = fetch_all_problems_count()
     query = """
     query ($categorySlug: String
     $limit: Int
