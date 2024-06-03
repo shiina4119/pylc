@@ -14,7 +14,7 @@ def send_judge(title_slug: str, id: int, lang: str, typed_code: str, test: bool)
     headers = generate_headers()
     headers["Referer"] = f"{BASE_URL}/problems/{title_slug}"
 
-    test_cases = fetch_problem_testcases(title_slug=title_slug)["exampleTestcaseList"]
+    test_cases = fetch_problem_testcases(title_slug=title_slug)
 
     payload = {
         "lang": lang,

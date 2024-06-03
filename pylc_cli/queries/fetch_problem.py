@@ -27,6 +27,27 @@ def fetch_daily() -> int:
     )
 
 
+def fetch_problem_content(title_slug: str) -> str:
+    headers = generate_headers()
+    query = """
+    query ($titleSlug: String!) {
+      question(titleSlug: $titleSlug) {
+        content
+      }
+    }
+    """
+    variables = {"titleSlug": title_slug}
+    response = requests.post(
+        url=GRAPHQL_URL, json={"query": query, "variables": variables}, headers=headers
+    )
+    if response.status_code != 200:
+        # TODO: handle 403 errors nicely
+        raise ConnectionError
+
+    json = response.json()
+    return json["data"]["question"]["content"]
+
+
 def fetch_problem_snippets(title_slug: str) -> dict:
     headers = generate_headers()
     query = """
@@ -57,7 +78,7 @@ def fetch_problem_snippets(title_slug: str) -> dict:
     return snippets
 
 
-def fetch_problem_testcases(title_slug: str) -> dict:
+def fetch_problem_testcases(title_slug: str) -> str:
     headers = generate_headers()
     query = """
     query ($titleSlug: String!) {
@@ -76,4 +97,4 @@ def fetch_problem_testcases(title_slug: str) -> dict:
         raise ConnectionError
 
     json = response.json()
-    return json["data"]["question"]
+    return json["data"]["question"]["exampleTestcaseList"]

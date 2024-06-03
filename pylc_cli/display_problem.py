@@ -2,6 +2,7 @@ import html2text
 from rich.markdown import Markdown
 from rich.padding import Padding
 from . import console, con
+from .queries.fetch_problem import fetch_problem_content
 
 DIFF_COLOR = {"Easy": "green", "Medium": "yellow", "Hard": "red"}
 
@@ -13,21 +14,13 @@ def display_problem(id: int):
         return r
 
     res = con.execute(
-        "SELECT md.title, md.difficulty, c.content "
-        "FROM "
-        "metadata AS md "
-        "JOIN "
-        "content AS c "
-        "ON "
-        "md.frontend_id = c.frontend_id "
-        "WHERE "
-        f"md.frontend_id = {id}"
+        f"SELECT title, title_slug, difficulty FROM metadata WHERE frontend_id = {id}"
     )
     data = res.fetchone()
-    diff = data["difficulty"]
     title = data["title"]
-    content = data["content"]
-    color = DIFF_COLOR[diff]
+    title_slug = data["title_slug"]
+    content = fetch_problem_content(title_slug=title_slug)
+    color = DIFF_COLOR[data["difficulty"]]
 
     res = con.execute(f"SELECT tags FROM tags WHERE frontend_id = {id}")
     data = res.fetchall()
