@@ -3,6 +3,7 @@ from . import EXT_MAP, prefs
 from .display_problem import display_problem
 from .run_solution import run
 from .solve import solve
+from .cache import update_cache
 from .queries.fetch_problem import fetch_daily
 
 
@@ -32,6 +33,8 @@ def main():
     submit_parser.add_argument("id", type=int)
     submit_parser.add_argument("--lang", default=lang, choices=EXT_MAP.keys())
 
+    update_parser = subparsers.add_parser("update")
+
     args = parser.parse_args()
 
     if args.command == "daily":
@@ -53,3 +56,6 @@ def main():
 
     elif args.command == "submit":
         run(id=args.id, lang=args.lang, test=False)
+
+    elif args.command == "update":
+        update_cache()
