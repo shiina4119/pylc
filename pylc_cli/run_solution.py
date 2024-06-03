@@ -62,6 +62,12 @@ def run(id: int, lang: str, test: bool):
             console.print(Padding("Compile Error", (1, 2), style="bold red"))
             console.print(Padding(status["compile_error"], (0, 2, 1, 2)))
 
+        elif status["status_msg"] == "Time Limit Exceeded":
+            console.print(Padding("Time Limit Exceeded", (1, 2), style="bold red"))
+
+        elif status["status_msg"] == "Memory Limit Exceeded":
+            console.print(Padding("Memory Limit Exceeded", (1, 2), style="bold red"))
+
     else:
         if status["status_msg"] == "Accepted":
             console.print(Padding(status["status_msg"], (1, 2), style="bold green"))
