@@ -57,10 +57,10 @@ def run(id: int, lang: str, test: bool):
         elif status["status_msg"] == "Runtime Error":
             console.print(Padding("Runtime Error", (1, 2), style="bold red"))
             console.print(Padding(status["runtime_error"], (0, 2, 1, 2)))
-        
+
         elif status["status_msg"] == "Compile Error":
             console.print(Padding("Compile Error", (1, 2), style="bold red"))
-            console.print(Padding(status["compile_error"], (0, 2, 1, 2)))            
+            console.print(Padding(status["compile_error"], (0, 2, 1, 2)))
 
     else:
         if status["status_msg"] == "Accepted":

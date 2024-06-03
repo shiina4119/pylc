@@ -58,7 +58,7 @@ def fetch_problem_snippets(title_slug: str) -> dict:
           code
         }
       }
-    }       
+    }
     """
     variables = {"titleSlug": title_slug}
     response = requests.post(
