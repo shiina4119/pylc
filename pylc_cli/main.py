@@ -21,7 +21,7 @@ def main():
     pick_parser.add_argument("id", type=int)
 
     solve_parser = subparsers.add_parser("solve")
-    solve_parser.add_argument("titleslug")
+    solve_parser.add_argument("id", type=int)
     solve_parser.add_argument("--lang", default=lang, choices=EXT_MAP.keys())
 
     test_parser = subparsers.add_parser("test")
@@ -42,7 +42,7 @@ def main():
 
     elif args.command == "solve":
         solve(
-            title_slug=args.titleslug,
+            id=args.id,
             lang=args.lang,
             editor=editor,
             editor_args=editor_args,

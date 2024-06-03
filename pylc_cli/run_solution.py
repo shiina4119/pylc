@@ -18,14 +18,13 @@ def stringify_code(file_path: str) -> str:
 
 def run(id: int, lang: str, test: bool):
     res = con.execute(
-        f"SELECT frontend_id, id, title_slug FROM metadata WHERE frontend_id = {id}"
+        f"SELECT id, title_slug FROM metadata WHERE frontend_id = {id}"
     )
     data = res.fetchone()
     title_slug = data["title_slug"]
-    frontend_id = data["frontend_id"]
     ext = EXT_MAP[lang]
 
-    file_path = f"{BASE_DIR}/code/{frontend_id}.{title_slug}.{lang}.{ext}"
+    file_path = f"{BASE_DIR}/code/{id}.{title_slug}.{lang}.{ext}"
     if not Path(file_path).is_file():
         raise FileNotFoundError
 
