@@ -23,9 +23,10 @@ def fetch_snippets(title_slug: str) -> dict:
         raise ConnectionError
 
     json = response.json()
-    snippet_data = json["data"]["question"]["codeSnippets"]
-    snippets = {}
-    for snippet_map in snippet_data:
-        snippets[snippet_map["langSlug"]] = snippet_map["code"]
+
+    snippets = {
+        snippet_map["langSlug"]: snippet_map["code"]
+        for snippet_map in json["data"]["question"]["codeSnippets"]
+    }
 
     return snippets

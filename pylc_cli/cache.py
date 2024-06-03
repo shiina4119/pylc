@@ -8,6 +8,8 @@ from .queries.fetch_all_problems import (
 
 
 def update_cache():
+    count = fetch_all_problems_count()
+
     cur = con.cursor()
 
     cur.execute("DROP TABLE IF EXISTS metadata")
@@ -24,8 +26,6 @@ def update_cache():
         "CREATE TABLE tags(frontend_id INTEGER, tags TEXT, "
         "PRIMARY KEY (frontend_id, tags))"
     )
-
-    count = fetch_all_problems_count()
 
     with console.status(status="Fetching metadata...", spinner="monkey"):
         metadata = fetch_all_problems_metadata(count=count)
