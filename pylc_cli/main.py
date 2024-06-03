@@ -25,11 +25,11 @@ def main():
     solve_parser.add_argument("--lang", default=lang, choices=EXT_MAP.keys())
 
     test_parser = subparsers.add_parser("test")
-    test_parser.add_argument("titleslug")
+    test_parser.add_argument("id", type=int)
     test_parser.add_argument("--lang", default=lang, choices=EXT_MAP.keys())
 
     submit_parser = subparsers.add_parser("submit")
-    submit_parser.add_argument("titleslug")
+    submit_parser.add_argument("id", type=int)
     submit_parser.add_argument("--lang", default=lang, choices=EXT_MAP.keys())
 
     args = parser.parse_args()
@@ -49,7 +49,7 @@ def main():
         )
 
     elif args.command == "test":
-        run(title_slug=args.titleslug, lang=args.lang, test=True)
+        run(id=args.id, lang=args.lang, test=True)
 
     elif args.command == "submit":
-        run(title_slug=args.titleslug, lang=args.lang, test=False)
+        run(id=args.id, lang=args.lang, test=False)

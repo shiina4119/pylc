@@ -56,3 +56,25 @@ def fetch_problem(title_slug: str) -> dict:
 
     json = response.json()
     return json["data"]["question"]
+
+
+def fetch_problem_testcases(title_slug: str) -> dict:
+    headers = generate_headers()
+    query = """
+    query ($titleSlug: String!) {
+      question(titleSlug: $titleSlug) {
+        exampleTestcaseList
+      }
+    }
+    """
+    variables = {"titleSlug": title_slug}
+
+    response = requests.post(
+        url=GRAPHQL_URL, json={"query": query, "variables": variables}, headers=headers
+    )
+    if response.status_code != 200:
+        # TODO: handle 403 errors nicely
+        raise ConnectionError
+
+    json = response.json()
+    return json["data"]["question"]

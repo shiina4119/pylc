@@ -1,10 +1,10 @@
 import requests
 import json
 from . import generate_headers, BASE_URL
-from .fetch_problem import fetch_problem
+from .fetch_problem import fetch_problem_testcases
 
 
-def send_judge(title_slug: str, lang: str, typed_code: str, test: bool):
+def send_judge(title_slug: str, id: int, lang: str, typed_code: str, test: bool):
     url = f"{BASE_URL}/problems/{title_slug}"
     if test:
         url += "/interpret_solution/"
@@ -14,18 +14,17 @@ def send_judge(title_slug: str, lang: str, typed_code: str, test: bool):
     headers = generate_headers()
     headers["Referer"] = f"{BASE_URL}/problems/{title_slug}"
 
-    question = fetch_problem(title_slug=title_slug)
-    questionId = question["questionId"]
+    test_cases = fetch_problem_testcases(title_slug=title_slug)["exampleTestcaseList"]
 
     payload = {
         "lang": lang,
-        "question_id": questionId,
+        "question_id": id,
         "typed_code": typed_code,
     }
 
     if test:
         input_str = ""
-        for i in question["exampleTestcaseList"]:
+        for i in test_cases:
             input_str += i + "\n"
 
         payload["data_input"] = input_str
