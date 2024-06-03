@@ -13,7 +13,7 @@ def display_problem(id: int):
         return r
 
     res = con.execute(
-        "SELECT md.frontend_id, md.title, md.difficulty, c.content "
+        "SELECT md.title, md.difficulty, c.content "
         "FROM "
         "metadata AS md "
         "JOIN "
@@ -25,7 +25,6 @@ def display_problem(id: int):
     )
     data = res.fetchone()
     diff = data["difficulty"]
-    question_id = data["frontend_id"]
     title = data["title"]
     content = data["content"]
     color = DIFF_COLOR[diff]
@@ -34,9 +33,7 @@ def display_problem(id: int):
     data = res.fetchall()
     tags = ", ".join(d["tags"] for d in data)
 
-    console.print(
-        Padding(f"[b][[{color}]{question_id}[/{color}]] [u]{title}[/u][/b]", (1, 2))
-    )
+    console.print(Padding(f"[b][[{color}]{id}[/{color}]] [u]{title}[/u][/b]", (1, 2)))
 
     html = "\n".join(map(str, content.split("\n")))
     html = replaceSup(html)

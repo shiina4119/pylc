@@ -27,26 +27,19 @@ def fetch_daily() -> int:
     )
 
 
-def fetch_problem(title_slug: str) -> dict:
+def fetch_problem_snippets(title_slug: str) -> dict:
     headers = generate_headers()
     query = """
     query ($titleSlug: String!) {
       question(titleSlug: $titleSlug) {
-        questionId
-        questionFrontendId
-        title
-        difficulty
-        content
-        mysqlSchemas
-        exampleTestcaseList
-        topicTags {
-          name
+        codeSnippets {
+          langSlug
+          code
         }
       }
-    }
+    }       
     """
     variables = {"titleSlug": title_slug}
-
     response = requests.post(
         url=GRAPHQL_URL, json={"query": query, "variables": variables}, headers=headers
     )
@@ -55,7 +48,13 @@ def fetch_problem(title_slug: str) -> dict:
         raise ConnectionError
 
     json = response.json()
-    return json["data"]["question"]
+
+    snippets = {
+        snippet_map["langSlug"]: snippet_map["code"]
+        for snippet_map in json["data"]["question"]["codeSnippets"]
+    }
+
+    return snippets
 
 
 def fetch_problem_testcases(title_slug: str) -> dict:
