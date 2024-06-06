@@ -17,9 +17,7 @@ def stringify_code(file_path: str) -> str:
 
 
 def run(id: int, lang: str, test: bool):
-    res = con.execute(
-        f"SELECT id, title_slug FROM metadata WHERE frontend_id = {id}"
-    )
+    res = con.execute(f"SELECT id, title_slug FROM metadata WHERE frontend_id = {id}")
     data = res.fetchone()
     title_slug = data["title_slug"]
     ext = EXT_MAP[lang]
@@ -36,7 +34,7 @@ def run(id: int, lang: str, test: bool):
             id=data["id"],
             lang=lang,
             typed_code=typed_code,
-            test=test
+            test=test,
         )
         status = get_status(title_slug=title_slug, id=run_id, test=test)
 
@@ -47,12 +45,14 @@ def run(id: int, lang: str, test: bool):
             else:
                 console.print(Padding("Wrong Answer", (1, 2), style="bold red"))
 
-            console.print(Padding(
-                f"Expected answer: {status["expected_code_answer"]}\n"
-                f"Your answer: {status["code_answer"]}\n"
-                f"stdout: {status["code_output"]}",
-                (0, 2, 1, 2)
-            ))
+            console.print(
+                Padding(
+                    f"Expected answer: {status['expected_code_answer']}\n"
+                    f"Your answer: {status['code_answer']}\n"
+                    f"stdout: {status['code_output']}",
+                    (0, 2, 1, 2),
+                )
+            )
 
         elif status["status_msg"] == "Runtime Error":
             console.print(Padding("Runtime Error", (1, 2), style="bold red"))
@@ -71,27 +71,29 @@ def run(id: int, lang: str, test: bool):
     else:
         if status["status_msg"] == "Accepted":
             console.print(Padding(status["status_msg"], (1, 2), style="bold green"))
-            console.print(Padding(
-                f"Runtime: {status["status_runtime"]} "
-                f"beats {round(status["runtime_percentile"], 2)}% of users "
-                f"using {status["pretty_lang"]}.\n"
-                f"Memory: {status["status_memory"]} "
-                f"beats {round(status["memory_percentile"], 2)}% of users "
-                f"using {status["pretty_lang"]}.",
-                (0, 2, 1, 2)
-            ))
+            console.print(
+                Padding(
+                    f"Runtime: {status['status_runtime']} "
+                    f"beats {round(status['runtime_percentile'], 2)}% of users "
+                    f"using {status['pretty_lang']}.\n"
+                    f"Memory: {status['status_memory']} "
+                    f"beats {round(status['memory_percentile'], 2)}% of users "
+                    f"using {status['pretty_lang']}.",
+                    (0, 2, 1, 2),
+                )
+            )
 
         else:
-            console.print(
-                Padding(status["status_msg"], (1, 2), style="bold red")
-            )
+            console.print(Padding(status["status_msg"], (1, 2), style="bold red"))
             if status["status_msg"] == "Wrong Answer":
-                console.print(Padding(
-                    f"Last testcase: {status["input_formatted"]}\n"
-                    f"Expected Answer: {status["expected_output"]}\n"
-                    f"Your Answer: {status["code_output"]}",
-                    (0, 2, 1, 2)
-                ))
+                console.print(
+                    Padding(
+                        f"Last testcase: {status['input_formatted']}\n"
+                        f"Expected Answer: {status['expected_output']}\n"
+                        f"Your Answer: {status['code_output']}",
+                        (0, 2, 1, 2),
+                    )
+                )
 
             elif status["status_msg"] == "Runtime Error":
                 console.print(Padding(status["full_runtime_error"], (1, 2)))
