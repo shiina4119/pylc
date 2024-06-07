@@ -39,3 +39,13 @@ def display_problem(id: int):
     console.print(Padding(Markdown(markup=md), (0, 2)))
 
     console.print(Padding(f"Topics: {tags}", (1, 2)))
+
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("id", type=int)
+    args = parser.parse_args()
+
+    display_problem(args.titleslug)

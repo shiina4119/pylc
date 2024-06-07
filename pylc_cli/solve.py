@@ -20,3 +20,15 @@ def solve(id: int, lang: str, editor: str, editor_args: list[str]):
         file_path.write_text(snippet)
 
     subprocess.run([editor, *editor_args, file_path.absolute()])
+
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("id", type=int)
+    parser.add_argument("lang", choices=EXT_MAP.keys())
+    parser.add_argument("editor")
+    args = parser.parse_args()
+
+    solve(args.titleslug, args.lang, args.test, [])
