@@ -1,6 +1,6 @@
 from pathlib import Path
 import subprocess
-from . import BASE_DIR, EXT_MAP, con
+from . import BASE_DIR, EXT_MAP, con, console
 from .queries.fetch_problem import fetch_problem_snippets
 
 
@@ -14,7 +14,9 @@ def solve(id: int, lang: str, editor: str, editor_args: list[str]):
 
     if not Path(file_path).is_file():
         file_path.touch()
-        snippet = fetch_problem_snippets(title_slug=title_slug)[lang]
+        with console.status(status="Fetching snippet...", spinner="monkey"):
+            snippet = fetch_problem_snippets(title_slug=title_slug)[lang]
+
         file_path.write_text(snippet)
 
     subprocess.run([editor, *editor_args, file_path.absolute()])
