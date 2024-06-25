@@ -47,12 +47,12 @@ def run(id: int, lang: str, test: bool):
 
             console.print(
                 Padding(
-                    f"Expected answer: {status['expected_code_answer']}\n"
-                    f"Your answer: {status['code_answer']}\n"
-                    f"stdout: {status['code_output']}",
-                    (0, 2, 1, 2),
+                    f"Expected Answer: {status['expected_code_answer']}\n"
+                    f"Your Answer: {status['code_answer']}\n",
+                    (0, 2),
                 )
             )
+            console.print(Padding(f"stdout: {status['code_output']}", (1, 2)))
 
         elif status["status_msg"] == "Runtime Error":
             console.print(Padding("Runtime Error", (1, 2), style="bold red"))
@@ -70,7 +70,7 @@ def run(id: int, lang: str, test: bool):
 
     else:
         if status["status_msg"] == "Accepted":
-            console.print(Padding(status["status_msg"], (1, 2), style="bold green"))
+            console.print(Padding("Accepted", (1, 2), style="bold green"))
             console.print(
                 Padding(
                     f"Runtime: {status['status_runtime']} "
