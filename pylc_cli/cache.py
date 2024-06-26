@@ -17,9 +17,6 @@ def update_cache():
         "id INTEGER, title TEXT, title_slug TEXT, difficulty TEXT, paid INTEGER)"
     )
 
-    # cur.execute("DROP TABLE IF EXISTS content")
-    # cur.execute("CREATE TABLE content(frontend_id INTEGER PRIMARY KEY, content TEXT)")
-
     cur.execute("DROP TABLE IF EXISTS tags")
     cur.execute(
         "CREATE TABLE tags(frontend_id INTEGER, tags TEXT, "
@@ -33,12 +30,6 @@ def update_cache():
         cur.execute(
             "INSERT INTO metadata VALUES (?, ?, ?, ?, ?, ?)", list(data.values())
         )
-
-    # with console.status(status="Fetching problem statements...", spinner="monkey"):
-    #     content = fetch_all_problems_content(count=count)
-
-    # for data in content:
-    #     cur.execute("INSERT INTO content VALUES(?, ?)", list(data.values()))
 
     with console.status(status="Fetching tags...", spinner="monkey"):
         tags = fetch_all_problems_tags(count=count)
@@ -54,3 +45,4 @@ def update_cache():
             )
 
     con.commit()
+    console.print(f"Fetched {count} problems")
