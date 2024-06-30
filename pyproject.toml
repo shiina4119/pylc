@@ -3,7 +3,7 @@ name = "pylc_cli"
 version = "0.3.2"
 description = "A small CLI tool to solve leetcode problems from your favorite text editor!"
 readme = "README.md"
-requires-python = ">=3.5"
+requires-python = ">=3.10"
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
@@ -13,6 +13,7 @@ dependencies = [
     "requests",
     "rich",
     "tomli_w",
+    "typer",
 ]
 
 [project.scripts]
