@@ -1,19 +1,19 @@
 import html2text
 from rich.markdown import Markdown
 from rich.padding import Padding
-from . import console, con
+from . import console, dbcon
 from .queries.fetch_problem import fetch_problem_content
 
 DIFF_COLOR = {"Easy": "green", "Medium": "yellow", "Hard": "red"}
 
 
-def display_problem(id: int):
+def display_problem(id: int) -> None:
     def replaceSup(r: str) -> str:
         r = r.replace("<sup>", "^")
         r = r.replace("</sup>", "")
         return r
 
-    res = con.execute(
+    res = dbcon.execute(
         f"SELECT title, title_slug, difficulty FROM metadata WHERE frontend_id = {id}"
     )
     data = res.fetchone()
@@ -21,10 +21,10 @@ def display_problem(id: int):
     title_slug = data["title_slug"]
     color = DIFF_COLOR[data["difficulty"]]
 
-    with console.status("Loading problem...", spinner="monkey"):
+    with console.status(status="Loading problem...", spinner="monkey"):
         content = fetch_problem_content(title_slug=title_slug)
 
-    res = con.execute(f"SELECT tags FROM tags WHERE frontend_id = {id}")
+    res = dbcon.execute(f"SELECT tags FROM tags WHERE frontend_id = {id}")
     data = res.fetchall()
     tags = ", ".join(d["tags"] for d in data)
 

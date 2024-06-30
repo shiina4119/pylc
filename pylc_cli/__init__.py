@@ -5,11 +5,7 @@ import tomllib
 import tomli_w
 
 BASE_DIR = f"{Path.home()}/.pylc"
-Path(f"{BASE_DIR}/code").mkdir(parents=True, exist_ok=True)
 CACHE_PATH = f"{BASE_DIR}/cache.sqlite"
-
-con = sqlite3.connect(CACHE_PATH)
-con.row_factory = sqlite3.Row
 
 EXT_MAP = {
     "c": "c",
@@ -32,6 +28,11 @@ EXT_MAP = {
     "erlang": "erl",
     "elixir": "exs",
 }
+
+Path(f"{BASE_DIR}/code").mkdir(parents=True, exist_ok=True)
+
+dbcon = sqlite3.connect(CACHE_PATH)
+dbcon.row_factory = sqlite3.Row
 
 console = Console()
 err_console = Console(stderr=True)

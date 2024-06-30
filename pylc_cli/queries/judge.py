@@ -4,7 +4,7 @@ from . import generate_headers, BASE_URL
 from .fetch_problem import fetch_problem_testcases
 
 
-def send_judge(title_slug: str, id: int, lang: str, typed_code: str, test: bool):
+def send_judge(title_slug: str, id: int, lang: str, typed_code: str, test: bool) -> str:
     url = f"{BASE_URL}/problems/{title_slug}"
     if test:
         url += "/interpret_solution/"

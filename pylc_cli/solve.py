@@ -1,11 +1,11 @@
 from pathlib import Path
 import subprocess
-from . import BASE_DIR, EXT_MAP, con, console
+from . import BASE_DIR, EXT_MAP, dbcon, console
 from .queries.fetch_problem import fetch_problem_snippets
 
 
-def solve(id: int, lang: str, editor: str, editor_args: list[str]):
-    res = con.execute(f"SELECT title_slug FROM metadata WHERE frontend_id = {id}")
+def solve(id: int, lang: str, editor: str, editor_args: list[str]) -> None:
+    res = dbcon.execute(f"SELECT title_slug FROM metadata WHERE frontend_id = {id}")
     data = res.fetchone()
 
     title_slug = data["title_slug"]

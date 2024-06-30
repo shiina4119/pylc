@@ -1,6 +1,6 @@
 from pathlib import Path
 from rich.padding import Padding
-from . import BASE_DIR, console, EXT_MAP, con
+from . import BASE_DIR, console, EXT_MAP, dbcon
 from .queries.judge import send_judge
 from .queries.status import get_status
 
@@ -16,8 +16,8 @@ def stringify_code(file_path: str) -> str:
     return "".join(lines)
 
 
-def run(id: int, lang: str, test: bool):
-    res = con.execute(f"SELECT id, title_slug FROM metadata WHERE frontend_id = {id}")
+def run(id: int, lang: str, test: bool) -> None:
+    res = dbcon.execute(f"SELECT id, title_slug FROM metadata WHERE frontend_id = {id}")
     data = res.fetchone()
     title_slug = data["title_slug"]
     ext = EXT_MAP[lang]
