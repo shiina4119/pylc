@@ -1,9 +1,10 @@
+import asyncio
 from typing_extensions import Annotated
 import typer
 from . import config_path, EXT_MAP, err_console, prefs
 from .cache import update_cache
 from .display_problem import display_problem
-from .queries.fetch_problem import fetch_daily
+from .queries.graphql import fetch_daily
 from .run_solution import run_solution
 from .solve_problem import solve_problem
 
@@ -19,15 +20,16 @@ def daily() -> None:
     """
     Display problem statement of daily problem.
     """
-    display_problem(id=fetch_daily())
+    daily_id = asyncio.run(fetch_daily())
+    asyncio.run(display_problem(id=daily_id))
 
 
 @app.command()
-def pick(id: Annotated[int, typer.Argument(help="Problem ID")] = fetch_daily()) -> None:
+def pick(id: Annotated[int, typer.Argument(help="Problem ID")]) -> None:
     """
-    Display problem statement. If ID is not provided, acts the same as daily command.
+    Display problem statement.
     """
-    display_problem(id=id)
+    asyncio.run(display_problem(id=id))
 
 
 @app.command()
@@ -41,7 +43,8 @@ def solve(
     """
     if lang not in EXT_MAP:
         err_console.print("Cannot use this language.")
-    solve_problem(id=id, lang=lang, editor=editor, editor_args=editor_args)
+
+    asyncio.run(solve_problem(id=id, lang=lang, editor=editor, editor_args=editor_args))
 
 
 @app.command()
@@ -55,7 +58,8 @@ def test(
     """
     if lang not in EXT_MAP:
         err_console.print("Cannot use this language.")
-    run_solution(id=id, lang=lang, test=True)
+
+    asyncio.run(run_solution(id=id, lang=lang, test=True))
 
 
 @app.command()
@@ -69,7 +73,8 @@ def submit(
     """
     if lang not in EXT_MAP:
         err_console.print("Cannot use this language.")
-    run_solution(id=id, lang=lang, test=False)
+
+    asyncio.run(run_solution(id=id, lang=lang, test=False))
 
 
 @app.command()
@@ -77,7 +82,7 @@ def update() -> None:
     """
     Build problem cache. Run this once after installing the package.
     """
-    update_cache()
+    asyncio.run(update_cache())
 
 
 @app.command()
