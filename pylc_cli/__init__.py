@@ -44,7 +44,12 @@ if not config_path.is_file():
     config_path.touch()
 
     default_config = {
-        "preferences": {"lang": "python3", "editor": "vi", "editor_args": []},
+        "preferences": {
+            "lang": "python3",
+            "editor": "vi",
+            "editor_args": [],
+            "tags": True,
+        },
         "cookies": {"csrftoken": "", "session": ""},
     }
 
