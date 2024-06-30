@@ -151,8 +151,7 @@ async def fetch_all_problems_count() -> int:
     return result["allQuestionsCount"][0]["count"]
 
 
-async def fetch_all_problems_metadata() -> dict:
-    count = await fetch_all_problems_count()
+async def fetch_all_problems_metadata(count: int) -> dict:
     async with Client(transport=transport) as session:
         query = gql(
             """
@@ -186,8 +185,7 @@ async def fetch_all_problems_metadata() -> dict:
     return result["questionList"]["data"]
 
 
-async def fetch_all_problems_tags() -> dict:
-    count = await fetch_all_problems_count()
+async def fetch_all_problems_tags(count: int) -> dict:
     async with Client(transport=transport) as session:
         query = gql(
             """

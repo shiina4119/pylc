@@ -1,13 +1,13 @@
 from . import dbcon, console
-from .queries.fetch_all_problems import (
+from .queries.graphql import (
     fetch_all_problems_count,
     fetch_all_problems_metadata,
     fetch_all_problems_tags,
 )
 
 
-def update_cache() -> None:
-    count = fetch_all_problems_count()
+async def update_cache() -> None:
+    count = await fetch_all_problems_count()
 
     cur = dbcon.cursor()
 
@@ -24,7 +24,7 @@ def update_cache() -> None:
     )
 
     with console.status(status="Fetching metadata...", spinner="monkey"):
-        metadata = fetch_all_problems_metadata(count=count)
+        metadata = await fetch_all_problems_metadata(count=count)
 
     for data in metadata:
         cur.execute(
@@ -32,7 +32,7 @@ def update_cache() -> None:
         )
 
     with console.status(status="Fetching tags...", spinner="monkey"):
-        tags = fetch_all_problems_tags(count=count)
+        tags = await fetch_all_problems_tags(count=count)
 
     for data in tags:
         tag_list = []
