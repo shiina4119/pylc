@@ -1,3 +1,4 @@
+import asyncio
 import html2text
 from rich.markdown import Markdown
 from rich.padding import Padding
@@ -7,7 +8,7 @@ from .queries.fetch_problem import fetch_problem_content
 DIFF_COLOR = {"Easy": "green", "Medium": "yellow", "Hard": "red"}
 
 
-def display_problem(id: int):
+async def display_problem(id: int):
     def replaceSup(r: str) -> str:
         r = r.replace("<sup>", "^")
         r = r.replace("</sup>", "")
@@ -22,7 +23,7 @@ def display_problem(id: int):
     color = DIFF_COLOR[data["difficulty"]]
 
     with console.status("Loading problem...", spinner="monkey"):
-        content = fetch_problem_content(title_slug=title_slug)
+        content = await fetch_problem_content(title_slug=title_slug)
 
     res = con.execute(f"SELECT tags FROM tags WHERE frontend_id = {id}")
     data = res.fetchall()
@@ -48,4 +49,4 @@ if __name__ == "__main__":
     parser.add_argument("id", type=int)
     args = parser.parse_args()
 
-    display_problem(args.titleslug)
+    asyncio.run(display_problem(args.titleslug))

@@ -1,3 +1,4 @@
+import aiohttp
 import requests
 from . import generate_headers, GRAPHQL_URL
 
@@ -27,7 +28,7 @@ def fetch_daily() -> int:
     )
 
 
-def fetch_problem_content(title_slug: str) -> str:
+async def fetch_problem_content(title_slug: str) -> str:
     headers = generate_headers()
     query = """
     query ($titleSlug: String!) {
@@ -37,15 +38,18 @@ def fetch_problem_content(title_slug: str) -> str:
     }
     """
     variables = {"titleSlug": title_slug}
-    response = requests.post(
-        url=GRAPHQL_URL, json={"query": query, "variables": variables}, headers=headers
-    )
-    if response.status_code != 200:
-        # TODO: handle 403 errors nicely
-        raise ConnectionError
+    async with aiohttp.ClientSession() as session:
+        response = await session.post(
+            url=GRAPHQL_URL,
+            json={"query": query, "variables": variables},
+            headers=headers,
+        )
+        if response.status != 200:
+            # TODO: handle 403 errors nicely
+            raise ConnectionError
 
-    json = response.json()
-    return json["data"]["question"]["content"]
+        json = await response.json()
+        return json["data"]["question"]["content"]
 
 
 def fetch_problem_snippets(title_slug: str) -> dict:

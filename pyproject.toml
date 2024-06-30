@@ -10,7 +10,8 @@ classifiers = [
 ]
 dependencies = [
     "html2text",
-    "requests",
+    "aiohttp",
+    "aiodns",
     "rich",
     "tomli_w",
 ]
