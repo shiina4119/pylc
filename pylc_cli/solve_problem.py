@@ -4,7 +4,7 @@ from . import BASE_DIR, EXT_MAP, dbcon, console
 from .queries.fetch_problem import fetch_problem_snippets
 
 
-def solve(id: int, lang: str, editor: str, editor_args: list[str]) -> None:
+def solve_problem(id: int, lang: str, editor: str, editor_args: list[str]) -> None:
     res = dbcon.execute(f"SELECT title_slug FROM metadata WHERE frontend_id = {id}")
     data = res.fetchone()
 
@@ -31,4 +31,4 @@ if __name__ == "__main__":
     parser.add_argument("editor")
     args = parser.parse_args()
 
-    solve(args.titleslug, args.lang, args.test, [])
+    solve_problem(args.titleslug, args.lang, args.test, [])
