@@ -21,7 +21,7 @@ def display_problem(id: int) -> None:
     title_slug = data["title_slug"]
     color = DIFF_COLOR[data["difficulty"]]
 
-    with console.status("Loading problem...", spinner="monkey"):
+    with console.status(status="Loading problem...", spinner="monkey"):
         content = fetch_problem_content(title_slug=title_slug)
 
     res = dbcon.execute(f"SELECT tags FROM tags WHERE frontend_id = {id}")
