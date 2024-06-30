@@ -16,7 +16,7 @@ def stringify_code(file_path: str) -> str:
     return "".join(lines)
 
 
-def run(id: int, lang: str, test: bool) -> None:
+def run_solution(id: int, lang: str, test: bool) -> None:
     res = dbcon.execute(f"SELECT id, title_slug FROM metadata WHERE frontend_id = {id}")
     data = res.fetchone()
     title_slug = data["title_slug"]
@@ -111,4 +111,4 @@ if __name__ == "__main__":
     parser.add_argument("test", type=bool)
     args = parser.parse_args()
 
-    run(args.titleslug, args.lang, args.test)
+    run_solution(args.titleslug, args.lang, args.test)
