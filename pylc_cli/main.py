@@ -1,61 +1,48 @@
-import argparse
-from . import EXT_MAP, prefs
-from .display_problem import display_problem
-from .run_solution import run
-from .solve import solve
+from . import app, EXT_MAP, prefs
 from .cache import update_cache
+from .display_problem import display_problem
 from .queries.fetch_problem import fetch_daily
+from .run_solution import run_solution
+from .solve_problem import solve_problem
+
+lang = prefs["lang"]
+editor = prefs["editor"]
+editor_args = prefs["editor_args"]
+
+
+@app.command()
+def daily() -> None:
+    display_problem(id=fetch_daily())
+
+
+@app.command()
+def pick(id: int = fetch_daily()) -> None:
+    display_problem(id=id)
+
+
+@app.command()
+def solve(id: int, lang: str = lang) -> None:
+    solve_problem(id=id, lang=lang, editor=editor, editor_args=editor_args)
+
+
+@app.command()
+def test(id: int, lang: str = lang) -> None:
+    run_solution(id=id, lang=lang, test=True)
+
+
+@app.command()
+def submit(id: int, lang: str = lang) -> None:
+    run_solution(id=id, lang=lang, test=False)
+
+
+@app.command()
+def update() -> None:
+    update_cache()
 
 
 def main():
-    lang = prefs["lang"]
-    editor = prefs["editor"]
-    editor_args = prefs["editor_args"]
+    app()
 
-    parser = argparse.ArgumentParser()
 
-    subparsers = parser.add_subparsers(dest="command")
-
-    daily_parser = subparsers.add_parser("daily")
-
-    pick_parser = subparsers.add_parser("pick")
-    pick_parser.add_argument("id", type=int)
-
-    solve_parser = subparsers.add_parser("solve")
-    solve_parser.add_argument("id", type=int)
-    solve_parser.add_argument("--lang", default=lang, choices=EXT_MAP.keys())
-
-    test_parser = subparsers.add_parser("test")
-    test_parser.add_argument("id", type=int)
-    test_parser.add_argument("--lang", default=lang, choices=EXT_MAP.keys())
-
-    submit_parser = subparsers.add_parser("submit")
-    submit_parser.add_argument("id", type=int)
-    submit_parser.add_argument("--lang", default=lang, choices=EXT_MAP.keys())
-
-    update_parser = subparsers.add_parser("update")
-
-    args = parser.parse_args()
-
-    if args.command == "daily":
-        display_problem(id=fetch_daily())
-
-    if args.command == "pick":
-        display_problem(id=args.id)
-
-    elif args.command == "solve":
-        solve(
-            id=args.id,
-            lang=args.lang,
-            editor=editor,
-            editor_args=editor_args,
-        )
-
-    elif args.command == "test":
-        run(id=args.id, lang=args.lang, test=True)
-
-    elif args.command == "submit":
-        run(id=args.id, lang=args.lang, test=False)
-
-    elif args.command == "update":
-        update_cache()
+if __name__ == "__main__":
+    main()
