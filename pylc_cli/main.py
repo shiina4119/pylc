@@ -46,18 +46,20 @@ def main():
         asyncio.run(display_problem(id=args.id))
 
     elif args.command == "solve":
-        solve(
-            id=args.id,
-            lang=args.lang,
-            editor=editor,
-            editor_args=editor_args,
+        asyncio.run(
+            solve(
+                id=args.id,
+                lang=args.lang,
+                editor=editor,
+                editor_args=editor_args,
+            )
         )
 
     elif args.command == "test":
-        run(id=args.id, lang=args.lang, test=True)
+        asyncio.run(run(id=args.id, lang=args.lang, test=True))
 
     elif args.command == "submit":
-        run(id=args.id, lang=args.lang, test=False)
+        asyncio.run(run(id=args.id, lang=args.lang, test=False))
 
     elif args.command == "update":
         update_cache()

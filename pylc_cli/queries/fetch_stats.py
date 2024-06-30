@@ -1,54 +1,47 @@
-import requests
-from . import GRAPHQL_URL, generate_headers
+from gql import Client, gql
+from . import transport
 
 
-def fetch_user_data() -> dict:
-    headers = generate_headers()
-    query = """
-    query {
-      userStatus {
-        isPremium
-        username
-      }
-    }
-    """
-    response = requests.post(url=GRAPHQL_URL, json={"query": query}, headers=headers)
-    if response.status_code != 200:
-        # TODO: handle 403 errors nicely
-        raise ConnectionError
+async def fetch_user_data() -> dict:
+    async with Client(transport=transport) as session:
+        query = gql(
+            """
+            query {
+              userStatus {
+                isPremium
+                username
+              }
+            }
+            """
+        )
 
-    json = response.json()
-    return json["data"]["userStatus"]
+        result = await session.execute(document=query)
+        return result["userStatus"]
 
 
-def fetch_user_stats() -> dict:
-    headers = generate_headers()
-    user = fetch_user_data()
-    query = """
-    query ($username: String!) {
-      allQuestionsCount {
-        difficulty
-        count
-      }
-      matchedUser(username: $username) {
-        submitStats {
-          acSubmissionNum {
-            difficulty
-            count
-          }
-        }
-      }
-    }
-    """
-    variables = {"username": user["username"]}
-    response = requests.post(
-        url=GRAPHQL_URL,
-        json={"query": query, "variables": variables},
-        headers=headers,
-    )
-    if response.status_code != 200:
-        # TODO: handle 403 errors nicely
-        raise ConnectionError
+async def fetch_user_stats() -> dict:
+    user = await fetch_user_data()
 
-    json = response.json()
-    return json
+    async with Client(transport=transport) as session:
+        query = gql(
+            """
+            query ($username: String!) {
+              allQuestionsCount {
+                difficulty
+                count
+              }
+              matchedUser(username: $username) {
+                submitStats {
+                  acSubmissionNum {
+                    difficulty
+                    count
+                  }
+                }
+              }
+            }
+            """
+        )
+        variables = {"username": user["username"]}
+
+        result = await session.execute(document=query, variable_values=variables)
+        return result

@@ -1,21 +1,22 @@
-import requests
-from time import sleep
-from . import generate_headers, BASE_URL
+import aiohttp
+import asyncio
+from . import BASE_URL, headers
 
 
-def get_status(title_slug: str, id: str, test: bool = True) -> dict:
+async def get_status(title_slug: str, id: str, test: bool = True) -> dict:
     url = f"{BASE_URL}/submissions/detail/{id}/check/"
 
-    headers = generate_headers()
     headers["Referer"] = f"{BASE_URL}/problems/{title_slug}"
     if test:
         headers["Referer"] += "/submissions"
 
-    while True:
-        response = requests.post(url=url, headers=headers)
-        sleep(1)
-        json = response.json()
-        if json["state"] == "SUCCESS":
-            break
+    async with aiohttp.ClientSession() as session:
+        while True:
+            async with session.post(url=url, headers=headers) as response:
+                _json = await response.json()
+                if _json["state"] == "SUCCESS":
+                    break
 
-    return json
+            await asyncio.sleep(2)
+
+        return _json

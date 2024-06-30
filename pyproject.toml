@@ -9,8 +9,8 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
+    "gql[aiohttp]",
     "html2text",
-    "requests",
     "rich",
     "tomli_w",
 ]

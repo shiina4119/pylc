@@ -16,7 +16,7 @@ def stringify_code(file_path: str) -> str:
     return "".join(lines)
 
 
-def run(id: int, lang: str, test: bool) -> None:
+async def run(id: int, lang: str, test: bool) -> None:
     res = dbcon.execute(f"SELECT id, title_slug FROM metadata WHERE frontend_id = {id}")
     data = res.fetchone()
     title_slug = data["title_slug"]
@@ -29,14 +29,14 @@ def run(id: int, lang: str, test: bool) -> None:
     typed_code = stringify_code(file_path=file_path)
 
     with console.status(status="Sending code to server...", spinner="monkey"):
-        run_id = send_judge(
+        run_id = await send_judge(
             title_slug=title_slug,
             id=data["id"],
             lang=lang,
             typed_code=typed_code,
             test=test,
         )
-        status = get_status(title_slug=title_slug, id=run_id, test=test)
+        status = await get_status(title_slug=title_slug, id=run_id, test=test)
 
     if test:
         if status["status_msg"] == "Accepted":
@@ -104,6 +104,7 @@ def run(id: int, lang: str, test: bool) -> None:
 
 if __name__ == "__main__":
     import argparse
+    import asyncio
 
     parser = argparse.ArgumentParser()
     parser.add_argument("id", type=int)
@@ -111,4 +112,4 @@ if __name__ == "__main__":
     parser.add_argument("test", type=bool)
     args = parser.parse_args()
 
-    run(args.titleslug, args.lang, args.test)
+    asyncio.run(run(args.titleslug, args.lang, args.test))

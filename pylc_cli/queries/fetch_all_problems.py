@@ -1,16 +1,18 @@
-import requests
-from . import GRAPHQL_URL, generate_headers
+from gql import Client, gql
+from . import headers, transport
 
 
-def fetch_all_problems_count() -> int:
-    headers = generate_headers()
-    query = """
-    query {
-      allQuestionsCount {
-        count
-      }
-    }
-    """
+async def fetch_all_problems_count() -> int:
+    async with Client(transport=transport) as session:
+        query = gql(
+            """
+            query {
+              allQuestionsCount {
+                count
+              }
+            }
+            """
+        )
     response = requests.post(url=GRAPHQL_URL, json={"query": query}, headers=headers)
     if response.status_code != 200:
         # TODO: handle 403 errors nicely
@@ -22,7 +24,6 @@ def fetch_all_problems_count() -> int:
 
 
 def fetch_all_problems_metadata(count: int) -> dict:
-    headers = generate_headers()
     query = """
     query ($categorySlug: String
     $limit: Int
@@ -62,7 +63,6 @@ def fetch_all_problems_metadata(count: int) -> dict:
 
 
 def fetch_all_problems_tags(count: int) -> dict:
-    headers = generate_headers()
     query = """
     query ($categorySlug: String
     $limit: Int
