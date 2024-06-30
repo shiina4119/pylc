@@ -1,5 +1,4 @@
 from gql import Client, gql
-import requests
 from . import transport
 
 
