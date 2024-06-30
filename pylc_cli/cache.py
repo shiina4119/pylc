@@ -1,4 +1,4 @@
-from . import con, console
+from . import dbcon, console
 from .queries.fetch_all_problems import (
     fetch_all_problems_count,
     fetch_all_problems_metadata,
@@ -6,10 +6,10 @@ from .queries.fetch_all_problems import (
 )
 
 
-def update_cache():
+def update_cache() -> None:
     count = fetch_all_problems_count()
 
-    cur = con.cursor()
+    cur = dbcon.cursor()
 
     cur.execute("DROP TABLE IF EXISTS metadata")
     cur.execute(
@@ -44,5 +44,5 @@ def update_cache():
                 "INSERT INTO tags VALUES(?, ?)", [data["questionFrontendId"], tag]
             )
 
-    con.commit()
+    dbcon.commit()
     console.print(f"Fetched {count} problems")
