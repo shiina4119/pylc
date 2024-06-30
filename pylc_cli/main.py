@@ -1,4 +1,5 @@
 import argparse
+import asyncio
 from . import EXT_MAP, prefs
 from .display_problem import display_problem
 from .run_solution import run
@@ -38,10 +39,11 @@ def main():
     args = parser.parse_args()
 
     if args.command == "daily":
-        display_problem(id=fetch_daily())
+        daily_id = asyncio.run(fetch_daily())
+        asyncio.run(display_problem(id=daily_id))
 
     if args.command == "pick":
-        display_problem(id=args.id)
+        asyncio.run(display_problem(id=args.id))
 
     elif args.command == "solve":
         solve(
