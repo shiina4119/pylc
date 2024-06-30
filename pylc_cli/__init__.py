@@ -3,7 +3,6 @@ from rich.console import Console
 import sqlite3
 import tomllib
 import tomli_w
-import typer
 
 BASE_DIR = f"{Path.home()}/.pylc"
 CACHE_PATH = f"{BASE_DIR}/cache.sqlite"
@@ -31,8 +30,6 @@ EXT_MAP = {
 }
 
 Path(f"{BASE_DIR}/code").mkdir(parents=True, exist_ok=True)
-
-app = typer.Typer()
 
 dbcon = sqlite3.connect(CACHE_PATH)
 dbcon.row_factory = sqlite3.Row
