@@ -1,10 +1,12 @@
 from pathlib import Path
 import subprocess
 from . import BASE_DIR, EXT_MAP, dbcon, console
-from .queries.fetch_problem import fetch_problem_snippets
+from .queries.graphql import fetch_problem_snippets
 
 
-def solve_problem(id: int, lang: str, editor: str, editor_args: list[str]) -> None:
+async def solve_problem(
+    id: int, lang: str, editor: str, editor_args: list[str]
+) -> None:
     res = dbcon.execute(f"SELECT title_slug FROM metadata WHERE frontend_id = {id}")
     data = res.fetchone()
 
@@ -15,15 +17,16 @@ def solve_problem(id: int, lang: str, editor: str, editor_args: list[str]) -> No
     if not Path(file_path).is_file():
         file_path.touch()
         with console.status(status="Fetching snippet...", spinner="monkey"):
-            snippet = fetch_problem_snippets(title_slug=title_slug)[lang]
+            snippets = await fetch_problem_snippets(title_slug=title_slug)
 
-        file_path.write_text(snippet)
+        file_path.write_text(snippets[lang])
 
     subprocess.run([editor, *editor_args, file_path.absolute()])
 
 
 if __name__ == "__main__":
     import argparse
+    import asyncio
 
     parser = argparse.ArgumentParser()
     parser.add_argument("id", type=int)
@@ -31,4 +34,4 @@ if __name__ == "__main__":
     parser.add_argument("editor")
     args = parser.parse_args()
 
-    solve_problem(args.titleslug, args.lang, args.test, [])
+    asyncio.run(solve_problem(args.titleslug, args.lang, args.test, []))
