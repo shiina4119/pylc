@@ -112,4 +112,4 @@ if __name__ == "__main__":
     parser.add_argument("test", type=bool)
     args = parser.parse_args()
 
-    asyncio.run(run_solution(args.titleslug, args.lang, args.test))
+    asyncio.run(run_solution(args.id, args.lang, args.test))

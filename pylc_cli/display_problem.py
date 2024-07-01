@@ -51,4 +51,4 @@ if __name__ == "__main__":
     parser.add_argument("id", type=int)
     args = parser.parse_args()
 
-    asyncio.run(display_problem(args.titleslug))
+    asyncio.run(display_problem(args.id))

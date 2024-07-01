@@ -34,4 +34,4 @@ if __name__ == "__main__":
     parser.add_argument("editor")
     args = parser.parse_args()
 
-    asyncio.run(solve_problem(args.titleslug, args.lang, args.test, []))
+    asyncio.run(solve_problem(args.id, args.lang, args.test, []))
