@@ -63,3 +63,7 @@ with open(config_path, "rb") as f:
     cookies = data["cookies"]
     prefs = data["preferences"]
     # TODO: handle error case for missing keys
+
+
+with Path(f"{BASE_DIR}/code.toml").open("rb") as f:
+    inject = tomllib.load(f)
