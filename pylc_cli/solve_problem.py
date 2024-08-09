@@ -1,6 +1,6 @@
 from pathlib import Path
 import subprocess
-from . import BASE_DIR, EXT_MAP, dbcon, console
+from . import BASE_DIR, EXT_MAP, dbcon, console, inject
 from .queries.graphql import fetch_problem_snippets
 
 
@@ -19,7 +19,12 @@ async def solve_problem(
         with console.status(status="Fetching snippet...", spinner="monkey"):
             snippets = await fetch_problem_snippets(title_slug=title_slug)
 
-        file_path.write_text(snippets[lang])
+        with open(file_path, "a") as f:
+            if (lang in inject) and ("inject_before" in inject[lang]):
+                f.write("\n".join(inject[lang]["inject_before"]))
+                f.write("\n\n")
+
+            f.write(snippets[lang])
 
     subprocess.run([editor, *editor_args, file_path.absolute()])
 

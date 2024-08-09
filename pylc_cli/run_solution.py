@@ -1,17 +1,20 @@
 from pathlib import Path
 from rich.padding import Padding
-from . import BASE_DIR, console, EXT_MAP, dbcon
+from . import BASE_DIR, console, EXT_MAP, dbcon, inject
 from .queries.judge import send_judge
 from .queries.status import get_status
 
 
-def stringify_code(file_path: str) -> str:
+def stringify_code(file_path: str, lang: str) -> str:
     if not Path(file_path).is_file():
         # TODO: handle code file generation
         raise FileNotFoundError
 
     with open(file_path, "r") as f:
         lines = f.readlines()
+
+    if (lang in inject) and ("inject_before" in inject[lang]):
+        lines = lines[len(inject[lang]["inject_before"]) + 1 :]
 
     return "".join(lines)
 
@@ -26,7 +29,7 @@ async def run_solution(id: int, lang: str, test: bool) -> None:
     if not Path(file_path).is_file():
         raise FileNotFoundError
 
-    typed_code = stringify_code(file_path=file_path)
+    typed_code = stringify_code(file_path=file_path, lang=lang)
 
     with console.status(status="Sending code to server...", spinner="monkey"):
         run_id = await send_judge(
