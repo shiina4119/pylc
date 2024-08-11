@@ -56,8 +56,6 @@ if not config_path.is_file():
     with config_path.open("wb") as f:
         tomli_w.dump(default_config, f)
 
-    exit()
-
 with open(config_path, "rb") as f:
     data = tomllib.load(f)
     cookies = data["cookies"]
@@ -68,6 +66,12 @@ with open(config_path, "rb") as f:
 inject_path = Path(f"{BASE_DIR}/inject.toml")
 if not inject_path.is_file():
     inject_path.touch()
+    lang_keys = {}
+    for lang in EXT_MAP.keys():
+        lang_keys[lang] = {}
+
+    with inject_path.open("wb") as f:
+        tomli_w.dump(lang_keys, f)
 
 with inject_path.open("rb") as f:
     inject = tomllib.load(f)

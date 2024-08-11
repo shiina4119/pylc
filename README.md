@@ -18,6 +18,7 @@ To get the variables follow this [link](https://github.com/clearloop/leetcode-cl
 ## Boilerplate generation
 
 To make LSPs happy, pylc can add boilerplate code (for example, importing necessary libraries or adding header files).
+Edit the `~/.pylc/inject.toml` file.
 
 ```toml
 # An example
