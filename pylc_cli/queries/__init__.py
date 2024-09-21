@@ -1,6 +1,6 @@
 from gql.transport.aiohttp import AIOHTTPTransport
-from .. import cookies
 
+from .. import cookies
 
 BASE_URL = "https://leetcode.com"
 GRAPHQL_URL = f"{BASE_URL}/graphql/"

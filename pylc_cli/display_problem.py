@@ -1,6 +1,7 @@
 import html2text
 from rich.markdown import Markdown
 from rich.padding import Padding
+
 from . import console, dbcon, prefs
 from .queries.graphql import fetch_problem_content
 

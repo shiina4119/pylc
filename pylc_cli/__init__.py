@@ -1,8 +1,9 @@
-from pathlib import Path
-from rich.console import Console
 import sqlite3
-import tomllib
+from pathlib import Path
+
 import tomli_w
+import tomllib
+from rich.console import Console
 
 BASE_DIR = f"{Path.home()}/.pylc"
 CACHE_PATH = f"{BASE_DIR}/cache.sqlite"

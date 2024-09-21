@@ -1,4 +1,4 @@
-from . import dbcon, console
+from . import console, dbcon
 from .queries.graphql import (
     fetch_all_problems_count,
     fetch_all_problems_metadata,

@@ -1,5 +1,7 @@
-import aiohttp
 import json
+
+import aiohttp
+
 from . import BASE_URL, headers
 from .graphql import fetch_problem_testcases
 

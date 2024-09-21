@@ -1,4 +1,5 @@
 from gql import Client, gql
+
 from . import transport
 
 

@@ -1,6 +1,8 @@
 from pathlib import Path
+
 from rich.padding import Padding
-from . import BASE_DIR, console, EXT_MAP, dbcon, inject
+
+from . import BASE_DIR, EXT_MAP, console, dbcon, inject
 from .queries.judge import send_judge
 from .queries.status import get_status
 

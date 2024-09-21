@@ -1,20 +1,14 @@
 [project]
 name = "pylc_cli"
-version = "20240811.1"
+version = "20240921"
 description = "A small CLI tool to solve leetcode problems from your favorite text editor!"
 readme = "README.md"
 requires-python = ">=3.10"
 classifiers = [
-    "Programming Language :: Python :: 3",
-    "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
 ]
-dependencies = [
-    "gql[aiohttp]",
-    "html2text",
-    "rich",
-    "tomli_w",
-    "typer",
-]
+dependencies = ["gql[aiohttp]", "html2text", "rich", "tomli_w", "typer"]
 
 [project.scripts]
 pylc = "pylc_cli.main:main"

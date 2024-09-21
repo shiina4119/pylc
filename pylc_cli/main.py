@@ -1,7 +1,9 @@
 import asyncio
-from typing_extensions import Annotated
+
 import typer
-from . import config_path, EXT_MAP, err_console, prefs
+from typing_extensions import Annotated
+
+from . import EXT_MAP, config_path, err_console, prefs
 from .cache import update_cache
 from .display_problem import display_problem
 from .queries.graphql import fetch_daily

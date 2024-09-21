@@ -1,6 +1,7 @@
-from pathlib import Path
 import subprocess
-from . import BASE_DIR, EXT_MAP, dbcon, console, inject
+from pathlib import Path
+
+from . import BASE_DIR, EXT_MAP, console, dbcon, inject
 from .queries.graphql import fetch_problem_snippets
 
 
