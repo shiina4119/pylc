@@ -2,13 +2,13 @@ import html2text
 from rich.markdown import Markdown
 from rich.padding import Padding
 
-from . import console, dbcon, prefs
+from . import console, dbcon
 from .queries.graphql import fetch_problem_content
 
 DIFF_COLOR = {"Easy": "green", "Medium": "yellow", "Hard": "red"}
 
 
-async def display_problem(problem_id: int) -> None:
+async def display_problem(problem_id: int, show_tags: bool) -> None:
     def replaceSup(r: str) -> str:
         r = r.replace("<sup>", "^")
         r = r.replace("</sup>", "")
@@ -25,7 +25,9 @@ async def display_problem(problem_id: int) -> None:
     with console.status(status="Loading problem...", spinner="monkey"):
         content = await fetch_problem_content(title_slug=title_slug)
 
-    console.print(Padding(f"[b][[{color}]{problem_id}[/{color}]] [u]{title}[/u][/b]", (1, 2)))
+    console.print(
+        Padding(f"[b][[{color}]{problem_id}[/{color}]] [u]{title}[/u][/b]", (1, 2))
+    )
 
     html = "\n".join(map(str, content.split("\n")))
     html = replaceSup(html)
@@ -35,7 +37,7 @@ async def display_problem(problem_id: int) -> None:
     md = h.handle(html)
     console.print(Padding(Markdown(markup=md), (0, 2)))
 
-    if not prefs["tags"]:
+    if not show_tags:
         return
 
     res = dbcon.execute(f"SELECT tags FROM tags WHERE frontend_id = {problem_id}")
@@ -50,6 +52,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("id", type=int)
+    parser.add_argument("--tags", action="store_true")
     args = parser.parse_args()
 
-    asyncio.run(display_problem(args.id))
+    asyncio.run(display_problem(args.id, args.tags))

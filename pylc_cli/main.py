@@ -11,6 +11,7 @@ from .run_solution import run_solution
 from .solve_problem import solve_problem
 
 prefs_lang = prefs["lang"]
+prefs_tags = prefs["tags"]
 prefs_editor = prefs["editor"]
 prefs_editor_args = prefs["editor_args"]
 
@@ -18,22 +19,25 @@ app = typer.Typer(no_args_is_help=True, help="Solve leetcode problems from the C
 
 
 @app.command()
-def daily() -> None:
+def daily(
+    option_tags: Annotated[bool, typer.Option("--tags", help="Show tags")] = prefs_tags,
+) -> None:
     """
     Display problem statement of daily problem.
     """
     daily_id = asyncio.run(fetch_daily())
-    asyncio.run(display_problem(problem_id=daily_id))
+    asyncio.run(display_problem(problem_id=daily_id, show_tags=option_tags))
 
 
 @app.command()
 def pick(
     id: Annotated[int, typer.Argument(help="Problem ID")],
+    option_tags: Annotated[bool, typer.Option("--tags", help="Show tags")] = prefs_tags,
 ) -> None:
     """
     Display problem statement.
     """
-    asyncio.run(display_problem(problem_id=id))
+    asyncio.run(display_problem(problem_id=id, show_tags=option_tags))
 
 
 @app.command()

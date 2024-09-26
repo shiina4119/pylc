@@ -22,7 +22,9 @@ def stringify_code(file_path: str, lang: str) -> str:
 
 
 async def run_solution(problem_id: int, lang: str, test: bool) -> None:
-    res = dbcon.execute(f"SELECT id, title_slug FROM metadata WHERE frontend_id = {problem_id}")
+    res = dbcon.execute(
+        f"SELECT id, title_slug FROM metadata WHERE frontend_id = {problem_id}"
+    )
     data = res.fetchone()
     title_slug = data["title_slug"]
     ext = EXT_MAP[lang]

@@ -8,12 +8,16 @@ from .queries.graphql import fetch_problem_snippets
 async def solve_problem(
     problem_id: int, lang: str, reset: bool, editor: str, editor_args: list[str]
 ) -> None:
-    res = dbcon.execute(f"SELECT title_slug FROM metadata WHERE frontend_id = {problem_id}")
+    res = dbcon.execute(
+        f"SELECT title_slug FROM metadata WHERE frontend_id = {problem_id}"
+    )
     data = res.fetchone()
 
     title_slug = data["title_slug"]
 
-    file_path = Path(f"{BASE_DIR}/code/{problem_id}.{title_slug}.{lang}.{EXT_MAP[lang]}")
+    file_path = Path(
+        f"{BASE_DIR}/code/{problem_id}.{title_slug}.{lang}.{EXT_MAP[lang]}"
+    )
 
     if reset:
         Path(file_path).unlink(missing_ok=True)
