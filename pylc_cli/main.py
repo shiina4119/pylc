@@ -42,6 +42,9 @@ def solve(
     option_lang: Annotated[
         str, typer.Option("--lang", help="Choose language")
     ] = prefs_lang,
+    option_reset: Annotated[
+        bool, typer.Option("--reset", help="Reset snippet")
+    ] = False,
 ) -> None:
     """
     Open problem in editor.
@@ -54,6 +57,7 @@ def solve(
         solve_problem(
             problem_id=id,
             lang=option_lang,
+            reset=option_reset,
             editor=prefs_editor,
             editor_args=prefs_editor_args,
         )
