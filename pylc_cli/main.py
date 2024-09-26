@@ -10,9 +10,9 @@ from .queries.graphql import fetch_daily
 from .run_solution import run_solution
 from .solve_problem import solve_problem
 
-lang = prefs["lang"]
-editor = prefs["editor"]
-editor_args = prefs["editor_args"]
+prefs_lang = prefs["lang"]
+prefs_editor = prefs["editor"]
+prefs_editor_args = prefs["editor_args"]
 
 app = typer.Typer(no_args_is_help=True, help="Solve leetcode problems from the CLI!")
 
@@ -27,56 +27,71 @@ def daily() -> None:
 
 
 @app.command()
-def pick(id: Annotated[int, typer.Argument(help="Problem ID")]) -> None:
+def pick(
+    typer_argument_id: Annotated[int, typer.Argument("id", help="Problem ID")],
+) -> None:
     """
     Display problem statement.
     """
-    asyncio.run(display_problem(id=id))
+    asyncio.run(display_problem(id=typer_argument_id))
 
 
 @app.command()
 def solve(
-    id: Annotated[int, typer.Argument(help="Problem ID")],
-    lang: Annotated[str, typer.Option(help="Choose language")] = lang,
+    typer_argument_id: Annotated[int, typer.Argument("id", help="Problem ID")],
+    typer_option_lang: Annotated[
+        str, typer.Option("--lang", help="Choose language")
+    ] = prefs_lang,
 ) -> None:
     """
     Open problem in editor.
     Pass --lang <lang> to select a different language.
     """
-    if lang not in EXT_MAP:
+    if typer_option_lang not in EXT_MAP:
         err_console.print("Cannot use this language.")
 
-    asyncio.run(solve_problem(id=id, lang=lang, editor=editor, editor_args=editor_args))
+    asyncio.run(
+        solve_problem(
+            id=typer_argument_id,
+            lang=typer_option_lang,
+            editor=prefs_editor,
+            editor_args=prefs_editor_args,
+        )
+    )
 
 
 @app.command()
 def test(
-    id: Annotated[int, typer.Argument(help="Problem ID")],
-    lang: Annotated[str, typer.Option(help="Choose language")] = lang,
+    typer_argument_id: Annotated[int, typer.Argument("id", help="Problem ID")],
+    typer_option_lang: Annotated[
+        str, typer.Option("--lang", help="Choose language")
+    ] = prefs_lang,
 ) -> None:
     """
     Send problem to leetcode servers for testing.
     Pass --lang <lang> to select a different language.
     """
-    if lang not in EXT_MAP:
+    if typer_option_lang not in EXT_MAP:
         err_console.print("Cannot use this language.")
 
-    asyncio.run(run_solution(id=id, lang=lang, test=True))
+    asyncio.run(run_solution(id=typer_argument_id, lang=typer_option_lang, test=True))
 
 
 @app.command()
 def submit(
-    id: Annotated[int, typer.Argument(help="Problem ID")],
-    lang: Annotated[str, typer.Option(help="Choose language")] = lang,
+    typer_argument_id: Annotated[int, typer.Argument("id", help="Problem ID")],
+    typer_option_lang: Annotated[
+        str, typer.Option("--lang", help="Choose language")
+    ] = prefs_lang,
 ) -> None:
     """
     Submit problem.
     Pass --lang <lang> to select a different language.
     """
-    if lang not in EXT_MAP:
+    if typer_option_lang not in EXT_MAP:
         err_console.print("Cannot use this language.")
 
-    asyncio.run(run_solution(id=id, lang=lang, test=False))
+    asyncio.run(run_solution(id=typer_argument_id, lang=typer_option_lang, test=False))
 
 
 @app.command()
@@ -94,7 +109,7 @@ def config() -> None:
     """
     import subprocess
 
-    subprocess.run([editor, *editor_args, config_path.absolute()])
+    subprocess.run([prefs_editor, *prefs_editor_args, config_path.absolute()])
 
 
 def main():
