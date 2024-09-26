@@ -21,13 +21,13 @@ def stringify_code(file_path: str, lang: str) -> str:
     return "".join(lines)
 
 
-async def run_solution(id: int, lang: str, test: bool) -> None:
-    res = dbcon.execute(f"SELECT id, title_slug FROM metadata WHERE frontend_id = {id}")
+async def run_solution(problem_id: int, lang: str, test: bool) -> None:
+    res = dbcon.execute(f"SELECT id, title_slug FROM metadata WHERE frontend_id = {problem_id}")
     data = res.fetchone()
     title_slug = data["title_slug"]
     ext = EXT_MAP[lang]
 
-    file_path = f"{BASE_DIR}/code/{id}.{title_slug}.{lang}.{ext}"
+    file_path = f"{BASE_DIR}/code/{problem_id}.{title_slug}.{lang}.{ext}"
     if not Path(file_path).is_file():
         raise FileNotFoundError
 

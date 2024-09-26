@@ -8,14 +8,14 @@ from .queries.graphql import fetch_problem_content
 DIFF_COLOR = {"Easy": "green", "Medium": "yellow", "Hard": "red"}
 
 
-async def display_problem(id: int) -> None:
+async def display_problem(problem_id: int) -> None:
     def replaceSup(r: str) -> str:
         r = r.replace("<sup>", "^")
         r = r.replace("</sup>", "")
         return r
 
     res = dbcon.execute(
-        f"SELECT title, title_slug, difficulty FROM metadata WHERE frontend_id = {id}"
+        f"SELECT title, title_slug, difficulty FROM metadata WHERE frontend_id = {problem_id}"
     )
     data = res.fetchone()
     title = data["title"]
@@ -25,7 +25,7 @@ async def display_problem(id: int) -> None:
     with console.status(status="Loading problem...", spinner="monkey"):
         content = await fetch_problem_content(title_slug=title_slug)
 
-    console.print(Padding(f"[b][[{color}]{id}[/{color}]] [u]{title}[/u][/b]", (1, 2)))
+    console.print(Padding(f"[b][[{color}]{problem_id}[/{color}]] [u]{title}[/u][/b]", (1, 2)))
 
     html = "\n".join(map(str, content.split("\n")))
     html = replaceSup(html)
@@ -38,7 +38,7 @@ async def display_problem(id: int) -> None:
     if not prefs["tags"]:
         return
 
-    res = dbcon.execute(f"SELECT tags FROM tags WHERE frontend_id = {id}")
+    res = dbcon.execute(f"SELECT tags FROM tags WHERE frontend_id = {problem_id}")
     data = res.fetchall()
     tags = ", ".join(d["tags"] for d in data)
     console.print(Padding(f"Topics: {tags}", (1, 2)))

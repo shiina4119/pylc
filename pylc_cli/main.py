@@ -23,23 +23,23 @@ def daily() -> None:
     Display problem statement of daily problem.
     """
     daily_id = asyncio.run(fetch_daily())
-    asyncio.run(display_problem(id=daily_id))
+    asyncio.run(display_problem(problem_id=daily_id))
 
 
 @app.command()
 def pick(
-    typer_argument_id: Annotated[int, typer.Argument("id", help="Problem ID")],
+    id: Annotated[int, typer.Argument(help="Problem ID")],
 ) -> None:
     """
     Display problem statement.
     """
-    asyncio.run(display_problem(id=typer_argument_id))
+    asyncio.run(display_problem(problem_id=id))
 
 
 @app.command()
 def solve(
-    typer_argument_id: Annotated[int, typer.Argument("id", help="Problem ID")],
-    typer_option_lang: Annotated[
+    id: Annotated[int, typer.Argument(help="Problem ID")],
+    option_lang: Annotated[
         str, typer.Option("--lang", help="Choose language")
     ] = prefs_lang,
 ) -> None:
@@ -47,13 +47,13 @@ def solve(
     Open problem in editor.
     Pass --lang <lang> to select a different language.
     """
-    if typer_option_lang not in EXT_MAP:
+    if option_lang not in EXT_MAP:
         err_console.print("Cannot use this language.")
 
     asyncio.run(
         solve_problem(
-            id=typer_argument_id,
-            lang=typer_option_lang,
+            problem_id=id,
+            lang=option_lang,
             editor=prefs_editor,
             editor_args=prefs_editor_args,
         )
@@ -62,8 +62,8 @@ def solve(
 
 @app.command()
 def test(
-    typer_argument_id: Annotated[int, typer.Argument("id", help="Problem ID")],
-    typer_option_lang: Annotated[
+    id: Annotated[int, typer.Argument(help="Problem ID")],
+    option_lang: Annotated[
         str, typer.Option("--lang", help="Choose language")
     ] = prefs_lang,
 ) -> None:
@@ -71,16 +71,16 @@ def test(
     Send problem to leetcode servers for testing.
     Pass --lang <lang> to select a different language.
     """
-    if typer_option_lang not in EXT_MAP:
+    if option_lang not in EXT_MAP:
         err_console.print("Cannot use this language.")
 
-    asyncio.run(run_solution(id=typer_argument_id, lang=typer_option_lang, test=True))
+    asyncio.run(run_solution(problem_id=id, lang=option_lang, test=True))
 
 
 @app.command()
 def submit(
-    typer_argument_id: Annotated[int, typer.Argument("id", help="Problem ID")],
-    typer_option_lang: Annotated[
+    id: Annotated[int, typer.Argument(help="Problem ID")],
+    option_lang: Annotated[
         str, typer.Option("--lang", help="Choose language")
     ] = prefs_lang,
 ) -> None:
@@ -88,10 +88,10 @@ def submit(
     Submit problem.
     Pass --lang <lang> to select a different language.
     """
-    if typer_option_lang not in EXT_MAP:
+    if option_lang not in EXT_MAP:
         err_console.print("Cannot use this language.")
 
-    asyncio.run(run_solution(id=typer_argument_id, lang=typer_option_lang, test=False))
+    asyncio.run(run_solution(problem_id=id, lang=option_lang, test=False))
 
 
 @app.command()
