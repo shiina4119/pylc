@@ -20,7 +20,7 @@ app = typer.Typer(no_args_is_help=True, help="Solve leetcode problems from the C
 
 @app.command()
 def daily(
-    option_tags: Annotated[bool, typer.Option("--tags", help="Show tags")] = prefs_tags,
+    option_tags: Annotated[bool, typer.Option("--tags", help="Show tags.")] = prefs_tags,
 ) -> None:
     """
     Display problem statement of daily problem.
@@ -31,8 +31,8 @@ def daily(
 
 @app.command()
 def pick(
-    id: Annotated[int, typer.Argument(help="Problem ID")],
-    option_tags: Annotated[bool, typer.Option("--tags", help="Show tags")] = prefs_tags,
+    id: Annotated[int, typer.Argument(help="Problem ID.")],
+    option_tags: Annotated[bool, typer.Option("--tags", help="Show tags.")] = prefs_tags,
 ) -> None:
     """
     Display problem statement.
@@ -42,17 +42,16 @@ def pick(
 
 @app.command()
 def solve(
-    id: Annotated[int, typer.Argument(help="Problem ID")],
+    id: Annotated[int, typer.Argument(help="Problem ID.")],
     option_lang: Annotated[
-        str, typer.Option("--lang", help="Choose language")
+        str, typer.Option("--lang", help="Choose language.")
     ] = prefs_lang,
     option_reset: Annotated[
-        bool, typer.Option("--reset", help="Reset snippet")
+        bool, typer.Option("--reset", help="Reset snippet.")
     ] = False,
 ) -> None:
     """
     Open problem in editor.
-    Pass --lang <lang> to select a different language.
     """
     if option_lang not in EXT_MAP:
         err_console.print("Cannot use this language.")
@@ -70,14 +69,13 @@ def solve(
 
 @app.command()
 def test(
-    id: Annotated[int, typer.Argument(help="Problem ID")],
+    id: Annotated[int, typer.Argument(help="Problem ID.")],
     option_lang: Annotated[
-        str, typer.Option("--lang", help="Choose language")
+        str, typer.Option("--lang", help="Choose language.")
     ] = prefs_lang,
 ) -> None:
     """
     Send problem to leetcode servers for testing.
-    Pass --lang <lang> to select a different language.
     """
     if option_lang not in EXT_MAP:
         err_console.print("Cannot use this language.")
@@ -87,14 +85,13 @@ def test(
 
 @app.command()
 def submit(
-    id: Annotated[int, typer.Argument(help="Problem ID")],
+    id: Annotated[int, typer.Argument(help="Problem ID.")],
     option_lang: Annotated[
-        str, typer.Option("--lang", help="Choose language")
+        str, typer.Option("--lang", help="Choose language.")
     ] = prefs_lang,
 ) -> None:
     """
     Submit problem.
-    Pass --lang <lang> to select a different language.
     """
     if option_lang not in EXT_MAP:
         err_console.print("Cannot use this language.")
