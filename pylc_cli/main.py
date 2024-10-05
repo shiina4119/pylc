@@ -20,7 +20,9 @@ app = typer.Typer(no_args_is_help=True, help="Solve leetcode problems from the C
 
 @app.command()
 def daily(
-    option_tags: Annotated[bool, typer.Option("--tags", help="Show tags.")] = prefs_tags,
+    option_tags: Annotated[
+        bool, typer.Option("--tags", help="Show tags.")
+    ] = prefs_tags,
 ) -> None:
     """
     Display problem statement of daily problem.
@@ -32,7 +34,9 @@ def daily(
 @app.command()
 def pick(
     id: Annotated[int, typer.Argument(help="Problem ID.")],
-    option_tags: Annotated[bool, typer.Option("--tags", help="Show tags.")] = prefs_tags,
+    option_tags: Annotated[
+        bool, typer.Option("--tags", help="Show tags.")
+    ] = prefs_tags,
 ) -> None:
     """
     Display problem statement.
