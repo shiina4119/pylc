@@ -1,6 +1,6 @@
 [project]
 name = "pylc_cli"
-version = "20240926"
+version = "20241104"
 description = "A small CLI tool to solve leetcode problems from your favorite text editor!"
 readme = "README.md"
 requires-python = ">=3.10"
